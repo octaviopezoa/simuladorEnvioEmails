@@ -27,17 +27,45 @@ function iniciarApp() {
 
 // validar el formulario
 function validarFormulario(e) {
+
     if (e.target.value.length > 0) {
-        console.log("hay algo");
+
+        // elimina errores
+        const error = document.querySelector('p', '.error');
+        error.remove();
+
+        e.target.classList.remove('border', 'border-red-500');
+        e.target.classList.add('border', 'border-green-500');
+
     } else {
+
+        e.target.classList.remove('border', 'border-green-500')
         e.target.classList.add('border', 'border-red-500');
-        mostrarError();
+        mostrarError("todos los campos son obligatorios");
+    }
+
+    if (e.target.type === "email") {
+
+        const er = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (er.test(e.target.value)) {
+
+            const error = document.querySelector('p.error');
+            error.remove();
+
+            e.target.classList.remove('border', 'border-red-500');
+            e.target.classList.add('border', 'border-green-500');
+        }
+        else {
+            e.target.classList.remove('border', 'border-green-500')
+            e.target.classList.add('border', 'border-red-500');
+            mostrarError("email no valido");
+        }
     }
 }
 
-function mostrarError() {
+function mostrarError(mensaje) {
     const mensajeError = document.createElement('p');
-    mensajeError.textContent = 'Todos los campos son obligatorios';
+    mensajeError.textContent = mensaje;
     mensajeError.classList.add('border', 'border-red-500', 'background-red-100', 'text-red-500', 'p-3', 'mt-5', 'text-center', 'error');
 
     const errores = document.querySelectorAll('.error');
